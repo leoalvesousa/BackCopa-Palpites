@@ -51,19 +51,12 @@ export class HunchService {
   async update(id: number, data: UpdateHunchDto) {
     await this.findOne(id)
 
-    if(data.gameId)
-    await this.gameService.findOne(data.gameId)
-
-    data.gameId = Number(data.gameId)
-
     return this.prisma.hunch.update({
       data,
       where:{
         id,
       }
     })
-
-    
   }
 
   async remove(id: number) {
