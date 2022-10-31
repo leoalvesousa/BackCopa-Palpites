@@ -1,9 +1,9 @@
 import { IsEmail, IsNotEmpty, Matches, MinLength} from "class-validator";
 
 export class CreateAuthDto {
-    // @IsNotEmpty({
-    //     message: 'Informe um nome',
-    //   })
+    @IsNotEmpty({
+        message: 'Informe um nome',
+      })
       name: string;
      
       @IsEmail({

@@ -8,12 +8,14 @@ import { CreateLogDto } from './dto/create-log.dto';
 @Injectable()
 export class AuthService {
   constructor(private prisma: PrismaService, private jwtService: JwtService) {}
+
   async create(data: CreateAuthDto) {
     const user = await this.prisma.user.findFirst({
       where: {
         email: data.email,
       },
     });
+
     if (user) {
       throw new BadRequestException('Email já cadastrado');
     }
@@ -27,15 +29,19 @@ export class AuthService {
       data,
     });
   }
+
   async login(createLogDto: CreateLogDto) {
+
     const user = await this.prisma.user.findFirst({
       where: {
         email: createLogDto.email,
       },
     });
+
     if (!user) {
       throw new BadRequestException('Email ou senha invalido');
     }
+    
     if (!(await bcrypt.compare(createLogDto.password, user.password))) {
       throw new BadRequestException('Email ou senha invalido');
     }
