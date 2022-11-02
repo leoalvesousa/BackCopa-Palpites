@@ -1,17 +1,8 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  ParseIntPipe,
-  Header,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { CreateLogDto } from './dto/create-log.dto';
+import { jwtGuard } from './dto/jwt.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -22,11 +13,12 @@ export class AuthController {
     return this.usersService.create(createUserDto);
   }
 
+  @UseGuards(jwtGuard)
   @Post('login')
   login(@Body() createLogDto: CreateLogDto) {
     return this.usersService.login(createLogDto);
   }
-
+  @UseGuards(jwtGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(+id);
