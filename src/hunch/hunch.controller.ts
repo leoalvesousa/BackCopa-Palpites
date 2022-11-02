@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { HunchService } from './hunch.service';
 import { CreateHunchDto } from './dto/create-hunch.dto';
@@ -31,19 +32,22 @@ export class HunchController {
 
   @UseGuards(jwtGuard)
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', ParseIntPipe) id: string) {
     return this.hunchService.findOne(+id);
   }
 
   @UseGuards(jwtGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateHunchDto: UpdateHunchDto) {
+  update(
+    @Param('id', ParseIntPipe) id: string,
+    @Body() updateHunchDto: UpdateHunchDto,
+  ) {
     return this.hunchService.update(+id, updateHunchDto);
   }
 
   @UseGuards(jwtGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id', ParseIntPipe) id: string) {
     return this.hunchService.remove(+id);
   }
 }
